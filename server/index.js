@@ -40,8 +40,8 @@ app.get('/stocks/:companyId', (req, res) => {
 });
 
 app.get('/company/:companyId', (req, res) => {
-  const { companyId } = req.params;
-  fetch(`http://localhost:3002/company/${companyId}`)
+  const id = req.params.companyId;
+  fetch(`http://localhost:3002/company/${id}`)
     .then(res => res.json())
     .then(data => res.json(data));
   }
@@ -50,6 +50,13 @@ app.get('/company/:companyId', (req, res) => {
 app.get('/companies/:companyId', (req, res) => {
   const id = req.params.companyId;
   fetch(`http://localhost:3001/companies/${id}`)
+    .then(res => res.json())
+    .then(data => res.json(data));
+});
+
+app.get('/companiesKatie/:companyId', (req, res) => {
+  const id = req.params.companyId;
+  fetch(`http://localhost:3009/companies/${id}`)
     .then(res => res.json())
     .then(data => res.json(data));
 });
