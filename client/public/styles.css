@@ -6,7 +6,7 @@ body {
   display: grid;
   grid-template-columns: repeat(20, 1fr);
   grid-template-rows: repeat(20, 1fr);
-  background-color: white;
+  background-color: #1B1B1D;
 }
 
 #stockValueChart {
@@ -17,7 +17,7 @@ body {
 
 #app {
   grid-column: 3 / span 10;
-  grid-row: 11 / span 3;
+  grid-row: 10 / span 3;
   display: block;
 }
 
@@ -28,7 +28,8 @@ body {
 }
 
 #carousel_app {
-  grid-row: 17 / span 3;
-  grid-column: 3 / span 10;
+  grid-row: 16 / span 3;
+  grid-column: 2 / span 15;
   display: block;
+  margin-left: 30px;
 }

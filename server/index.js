@@ -2,12 +2,17 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fetch = require('node-fetch');
-const Bluebird = require('bluebird');
-
-fetch.Promise = Bluebird;
+const httpProxy = require('http-proxy');
 
 const app = express();
+const apiProxy = httpProxy.createProxyServer();
+
+const serverRoutes = {
+  chart: 'http://ec2-18-223-123-181.us-east-2.compute.amazonaws.com/',
+  related: 'http://ec2-35-171-21-23.compute-1.amazonaws.com/',
+  purchase: 'http://ec2-54-183-159-221.us-west-1.compute.amazonaws.com/',
+  range: 'http://ec2-54-193-31-238.us-west-1.compute.amazonaws.com/',
+};
 
 app.use(express.static(path.join(__dirname, '../client/public')));
 app.use(bodyParser.json());
@@ -25,38 +30,30 @@ app.listen(port, (err) => {
   return console.log(`listening at port ${port}`);
 });
 
-app.get('/companiesJim/:companyId', (req, res) => {
-  const id = req.params.companyId;
-  fetch(`http://localhost:3004/companies/${id}`)
-    .then(res => res.json())
-    .then(data => res.json(data));
+app.all('/chart/*', (req, res) => {
+  const { chart } = serverRoutes;
+  apiProxy.web(req, res, {
+    target: chart,
+  });
 });
 
-app.get('/stocks/:companyId', (req, res) => {
-  const id = req.params.companyId;
-  fetch(`http://localhost:3004/stocks/${id}`)
-    .then(res =>  res.json())
-    .then(data => res.json(data));
+app.all('/related/*', (req, res) => {
+  const { related } = serverRoutes;
+  apiProxy.web(req, res, {
+    target: related,
+  });
 });
 
-app.get('/company/:companyId', (req, res) => {
-  const id = req.params.companyId;
-  fetch(`http://localhost:3002/company/${id}`)
-    .then(res => res.json())
-    .then(data => res.json(data));
-  }
-);
-
-app.get('/companies/:companyId', (req, res) => {
-  const id = req.params.companyId;
-  fetch(`http://localhost:3001/companies/${id}`)
-    .then(res => res.json())
-    .then(data => res.json(data));
+app.all('/purchase/*', (req, res) => {
+  const { purchase } = serverRoutes;
+  apiProxy.web(req, res, {
+    target: purchase,
+  });
 });
 
-app.get('/companiesKatie/:companyId', (req, res) => {
-  const id = req.params.companyId;
-  fetch(`http://localhost:3009/companies/${id}`)
-    .then(res => res.json())
-    .then(data => res.json(data));
+app.all('/range/*', (req, res) => {
+  const { range } = serverRoutes;
+  apiProxy.web(req, res, {
+    target: range,
+  });
 });
